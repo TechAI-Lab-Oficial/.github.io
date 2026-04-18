@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Álgebra Linear: o esqueleto oculto da IA — TechAI_Lab</title>
+
+  <meta name="description" content="Um guia técnico sobre Álgebra Linear na IA: vetores, matrizes e como imagens viram tensores. Sem matrizes, redes neurais não têm corpo para processar informação (Iezzi, Vol. 4)." />
+
+  <meta property="og:site_name" content="TechAI_Lab" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Álgebra Linear: o esqueleto oculto da IA | TechAI_Lab" />
+  <meta property="og:description" content="Vetores e matrizes como linguagem do processamento: dados, imagens, camadas lineares e por que a IA depende de álgebra (Iezzi, Vol. 4)." />
+  <meta property="og:image" content="og-techai-lab.svg" />
+  <meta property="og:image:type" content="image/svg+xml" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Álgebra Linear: o esqueleto oculto da IA | TechAI_Lab" />
+  <meta name="twitter:description" content="Como matrizes e vetores dão corpo às redes neurais para processar dados e imagens." />
+  <meta name="twitter:image" content="og-techai-lab.svg" />
+  
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== VARIÁVEIS & RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg:      #0a0a0f;
+      --bg2:     #0f0f1a;
+      --blue:    #4f8ef7;
+      --purple:  #8b5cf6;
+      --cyan:    #06b6d4;
+      --text:    #e2e8f0;
+      --muted:   #94a3b8;
+      --border:  #1e2a3a;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ===== READING PROGRESS + TO TOP ===== */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 220;
+    }
+    .reading-progress__bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      box-shadow: 0 0 18px rgba(79, 142, 247, 0.45);
+      transition: width 0.08s linear;
+    }
+
+    .to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 210;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(79, 142, 247, 0.18);
+      background: rgba(15, 15, 26, 0.82);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    }
+    .to-top:hover { border-color: rgba(139, 92, 246, 0.45); }
+    .to-top.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .to-top svg { width: 16px; height: 16px; stroke: var(--text); opacity: 0.92; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
+
+    /* ===== CABEÇALHO DO ARTIGO ===== */
+    .back-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3rem;
+      transition: transform 0.2s;
+    }
+    .back-link:hover { transform: translateX(-5px); }
+
+    .article-tag {
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .meta {
+      display: flex;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    /* ===== CONTEÚDO ===== */
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8rem;
+      margin: 3.5rem 0 1.5rem;
+      color: #fff;
+      border-left: 4px solid var(--blue);
+      padding-left: 10px;
+    }
+
+    h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      margin: 2rem 0 1rem;
+      color: #fff;
+    }
+
+    p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); text-align: justify; }
+    strong { color: #fff; font-weight: 600; }
+
+    .highlight-box {
+      background: var(--bg2);
+      border-left: 4px solid var(--purple);
+      padding: 2rem;
+      margin: 2.5rem 0;
+      border-radius: 0 16px 16px 0;
+    }
+
+    code {
+      background: #1e2a3a;
+      color: var(--blue);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.95em;
+    }
+
+    .logic-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      background: var(--bg2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .logic-table th, .logic-table td {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    .logic-table th { background: var(--border); color: var(--blue); }
+
+    footer {
+      text-align: center;
+      padding: 5rem 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress" aria-hidden="true">
+    <div class="reading-progress__bar" id="readingProgressBar"></div>
+  </div>
+
+  <button class="to-top" id="toTopBtn" type="button" aria-label="Voltar ao topo">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V6" />
+      <path d="M7 11l5-5 5 5" />
+    </svg>
+    Topo
+  </button>
+
+  <div class="container">
+    <a href="index.html" class="back-link">← Voltar para a Home</a>
+
+    <div class="article-tag">Matematica & IA</div>
+    <h1>Álgebra Linear: o esqueleto oculto da Inteligência Artificial</h1>
+
+    <div class="meta">
+      <span>📅 18 de Abril, 2026</span>
+      <span>⏱️ 13 min de leitura</span>
+      <span>✍️ Por TechAI_Lab Team</span>
+    </div>
+
+    <p>Quando alguém diz “rede neural”, muita gente imagina um cérebro artificial. Mas, por baixo do marketing e do mistério, existe uma realidade dura e elegante: <strong>IA moderna é Álgebra Linear aplicada em escala</strong>. Se você remover vetores e matrizes, não sobra “mente” — não sobra sequer <strong>corpo</strong> para processar informação.</p>
+
+    <p>É por isso que o estudo do <strong>Volume 4 do Iezzi</strong> (onde matrizes e sistemas ganham protagonismo) não é “base teórica opcional”. É a linguagem que transforma dados em algo que um modelo consegue multiplicar, somar e otimizar.</p>
+
+    <div class="highlight-box">
+      <strong>Resumo em uma frase:</strong> dados viram vetores; transformações viram matrizes; aprendizado ajusta matrizes para que a transformação produza saídas melhores.
+    </div>
+
+    <h2>1. Vetores: dados como coordenadas</h2>
+    <p>Um vetor é uma lista ordenada de números. Em IA, ele é um padrão: um documento, um usuário, um áudio, uma imagem — tudo pode ser representado como uma coleção de valores. Você escolhe um espaço de representação e coloca o objeto lá dentro.</p>
+    <p>Exemplos práticos:</p>
+    <ul style="margin: 0 0 1.5rem 1.2rem; color: var(--muted); font-size: 1.05rem;">
+      <li><strong>Texto</strong>: vira um vetor de características (ou um embedding).</li>
+      <li><strong>Recomendação</strong>: usuário e item viram vetores; a similaridade vira um produto interno.</li>
+      <li><strong>Sensor</strong>: uma janela de tempo vira um vetor de leituras.</li>
+    </ul>
+
+    <h2>2. Matrizes: transformações lineares em massa</h2>
+    <p>Se vetor é um dado, matriz é um <strong>operador</strong>. Ela pega um vetor de entrada e produz um vetor de saída. A operação central é a multiplicação:</p>
+    <p><code>y = W x + b</code></p>
+    <p>Aqui, <code>x</code> é o dado (vetor), <code>W</code> é a matriz de pesos (transformação) e <code>b</code> é o viés. Esse bloco é a essência de uma camada “linear” em uma rede neural.</p>
+
+    <div class="highlight-box" style="border-left-color: var(--blue);">
+      <strong>Conexão com Iezzi (Vol. 4):</strong> quando você estuda produto de matrizes, determinantes, escalonamento e sistemas lineares, você está treinando o cérebro para manipular exatamente o tipo de estrutura que a IA usa para “mover” informação entre espaços.
+    </div>
+
+    <h2>3. Imagens: de pixels a tensores</h2>
+    <p>Uma imagem em tons de cinza pode ser vista como uma matriz \(H \times W\), onde cada entrada é a intensidade do pixel. Em imagens coloridas, você tem três canais (RGB), o que vira um bloco \(H \times W \times 3\). Em deep learning, isso vira um <strong>tensor</strong> — uma generalização de matrizes para mais dimensões.</p>
+    <p>Mesmo assim, o motor interno continua sendo Álgebra Linear: filtros, convoluções e projeções são implementados como operações que, em última instância, podem ser reescritas como multiplicações de matrizes (ou blocos estruturados delas).</p>
+
+    <h2>4. Redes neurais sem matrizes não existem</h2>
+    <p>Uma rede neural é uma sequência de transformações. Entre elas, você aplica não-linearidades (ReLU, GELU etc.) para capturar padrões mais ricos. Mas a “estrutura” que carrega a informação, camada após camada, é linear:</p>
+    <p><code>x → (W1 x + b1) → σ(·) → (W2 · + b2) → σ(·) → ...</code></p>
+    <p>Sem matrizes, não há pesos. Sem pesos, não há parâmetros treináveis. Sem parâmetros, não há capacidade de adaptação. Em termos diretos: <strong>sem álgebra linear, a IA não tem corpo</strong>.</p>
+
+    <h2>5. Por que isso escala tão bem: paralelismo</h2>
+    <p>Outro motivo pelo qual matrizes dominam a IA: elas são perfeitas para hardware. GPUs e aceleradores (TPUs, NPUs) foram construídos para multiplicar matrizes com eficiência extrema. Treinar um modelo grande é, em grande parte, organizar o problema para caber nessa máquina de multiplicações.</p>
+
+    <h3>Uma tabela para fixar a ideia</h3>
+    <table class="logic-table">
+      <thead>
+        <tr>
+          <th>Objeto</th>
+          <th>Na matemática</th>
+          <th>Na IA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Vetor</strong></td>
+          <td>Elemento de um espaço \( \mathbb{R}^n \)</td>
+          <td>Representação numérica de dados (features/embeddings)</td>
+        </tr>
+        <tr>
+          <td><strong>Matriz</strong></td>
+          <td>Transformação linear \( \mathbb{R}^n \to \mathbb{R}^m \)</td>
+          <td>Pesos de camadas lineares; projeções; atenção</td>
+        </tr>
+        <tr>
+          <td><strong>Produto interno</strong></td>
+          <td>Medida de alinhamento</td>
+          <td>Similaridade, atenção, ranking, recomendação</td>
+        </tr>
+        <tr>
+          <td><strong>Tensor</strong></td>
+          <td>Estrutura multi-dimensional</td>
+          <td>Imagens, batches, sequências e mapas de ativação</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Conclusão: dominar o esqueleto para construir o organismo</h2>
+    <p>Você pode decorar nomes de modelos e frameworks. Mas, se quer construir — e não apenas usar — precisa dominar a gramática estrutural: vetores, matrizes e transformações. O <strong>Volume 4 do Iezzi</strong> é um dos caminhos mais diretos para solidificar isso.</p>
+    <p>IA é um organismo de alta complexidade, mas seu esqueleto é simples: <strong>matrizes movem informação</strong>. Quem entende isso passa a enxergar redes neurais como sistemas mecânicos precisos — e, por isso, começa a controlá-los.</p>
+
+    <footer>
+      © 2026 TechAI_Lab - Matrizes são estrutura. Estrutura vira performance.
+    </footer>
+  </div>
+
+  <script>
+    const progressBar = document.getElementById('readingProgressBar');
+    const toTopBtn = document.getElementById('toTopBtn');
+
+    function updateReadingUI() {
+      const doc = document.documentElement;
+      const scrollTop = doc.scrollTop || document.body.scrollTop;
+      const scrollHeight = doc.scrollHeight || document.body.scrollHeight;
+      const clientHeight = doc.clientHeight || window.innerHeight;
+      const scrollable = Math.max(1, scrollHeight - clientHeight);
+      const progress = Math.min(100, Math.max(0, (scrollTop / scrollable) * 100));
+
+      progressBar.style.width = progress.toFixed(2) + '%';
+
+      if (scrollTop > 420) toTopBtn.classList.add('is-visible');
+      else toTopBtn.classList.remove('is-visible');
+    }
+
+    window.addEventListener('scroll', updateReadingUI, { passive: true });
+    window.addEventListener('resize', updateReadingUI);
+    updateReadingUI();
+
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
