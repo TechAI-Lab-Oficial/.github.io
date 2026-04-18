@@ -43,7 +43,7 @@
       -webkit-text-fill-color: transparent;
     }
 
-    /* ===== NAVBAR ===== */
+    /* ===== NAVBAR (ATUALIZADA) ===== */
     nav {
       position: sticky; top: 0; z-index: 100;
       background: rgba(10, 10, 15, 0.85);
@@ -60,6 +60,32 @@
       width: 32px; height: 32px;
       background: linear-gradient(135deg, var(--blue), var(--purple));
       border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff;
+    }
+
+    .nav-links { display: flex; gap: 25px; align-items: center; }
+    .nav-links a { 
+      color: var(--muted); 
+      font-size: 14px; 
+      font-weight: 500; 
+      transition: 0.3s; 
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--blue); }
+    
+    .btn-nav {
+      background: var(--bg3);
+      color: white;
+      border: 1px solid var(--border);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-nav:hover {
+      border-color: var(--purple);
+      background: var(--bg2);
     }
 
     /* ===== HERO ===== */
@@ -107,15 +133,19 @@
 </head>
 <body>
 
+  <!-- NAVBAR ATUALIZADA -->
   <nav>
     <div class="nav-inner">
       <div class="logo">
         <div class="logo-icon">T</div>
         <span class="gradient-text">TechAI_Lab</span>
       </div>
-      <div style="display: flex; gap: 20px;">
-        <a href="#artigos" style="color: var(--muted); font-size: 14px;">Artigos</a>
-        <a href="#" style="color: var(--muted); font-size: 14px;">Sobre</a>
+      
+      <div class="nav-links">
+        <a href="index.html">Início</a>
+        <a href="#artigos">Artigos</a>
+        <a href="#">Sobre</a>
+        <button class="btn-nav">GitHub</button>
       </div>
     </div>
   </nav>
@@ -127,7 +157,6 @@
     </div>
   </header>
 
-  <!-- SEÇÃO DE ARTIGOS (AGORA NO LUGAR CERTO) -->
   <section id="artigos">
     <div class="container">
       <div class="section-tag">Conteúdo Exclusivo</div>
