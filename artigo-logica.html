@@ -24,6 +24,7 @@
       --border:  #1e2a3a;
     }
 
+    html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
@@ -32,7 +33,7 @@
       overflow-x: hidden;
     }
 
-    .container { max-width: 850px; margin: 0 auto; padding: 4rem 2rem; }
+    .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
 
     /* ===== CABEÇALHO DO ARTIGO ===== */
     .back-link {
@@ -59,9 +60,9 @@
 
     h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
       line-height: 1.1;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       background: linear-gradient(135deg, var(--blue), var(--purple));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -73,7 +74,7 @@
       color: var(--muted);
       font-size: 14px;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 2rem;
+      padding-bottom: 1.5rem;
       margin-bottom: 3rem;
     }
 
@@ -81,11 +82,20 @@
     h2 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.8rem;
-      margin: 3rem 0 1.5rem;
+      margin: 3.5rem 0 1.5rem;
+      color: #fff;
+      border-left: 4px solid var(--blue);
+      padding-left: 10px;
+    }
+
+    h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      margin: 2rem 0 1rem;
       color: #fff;
     }
 
-    p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); }
+    p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); text-align: justify; }
 
     strong { color: #fff; font-weight: 600; }
 
@@ -127,6 +137,7 @@
       border-top: 1px solid var(--border);
       color: var(--muted);
       font-size: 14px;
+      margin-top: 5rem;
     }
   </style>
 </head>
@@ -140,35 +151,37 @@
     
     <div class="meta">
       <span>📅 18 de Abril, 2026</span>
-      <span>⏱️ 8 min de leitura</span>
+      <span>⏱️ 12 min de leitura</span>
       <span>✍️ Por TechAI_Lab Team</span>
     </div>
 
     <p>Muitos acreditam que a Inteligência Artificial é uma "caixa preta" mágica, capaz de pensar como um ser humano por puro instinto digital. No entanto, ao abrirmos o capô dos algoritmos mais avançados do mundo, encontramos os fundamentos da matemática clássica que você estuda em livros como o de <strong>Gelson Iezzi</strong>.</p>
 
-    <p>A <strong>Lógica Proposicional</strong> não é apenas uma matéria de escola; ela é o sistema operacional da inteligência. Sem ela, não haveria inferência, não haveria filtragem de dados e, certamente, não haveria IA.</p>
+    <p>A <strong>Lógica Proposicional</strong> não é apenas uma matéria teórica para passar no vestibular; ela é o sistema operacional da inteligência artificial. Sem ela, não haveria inferência, não haveria filtragem de dados e, certamente, não haveria IA.</p>
 
     <div class="highlight-box">
-      <strong>O Conceito Fundamental:</strong> A implicação lógica <code>p → q</code> (se p, então q) é a unidade básica de qualquer tomada de decisão automatizada.
+      <strong>O Conceito Fundamental:</strong> A implicação lógica <code>p → q</code> (se p, então q) é a unidade básica de qualquer tomada de decisão automatizada. Se a IA não domina essa relação, ela não consegue "pensar".
     </div>
 
-    <h2>1. A Anatomia da Decisão</h2>
-    <p>Em um sistema de IA, as variáveis <code>p</code> e <code>q</code> deixam de ser apenas letras e passam a ser dados reais. Imagine um sistema de visão computacional de um carro autônomo:</p>
-    <ul>
-      <p><code>p</code>: O sensor detecta um objeto vermelho de formato octogonal.</p>
-      <p><code>q</code>: O sistema deve acionar os freios (Comando STOP).</p>
-    </ul>
-    <p>A relação <code>p → q</code> garante que, se a premissa for verdadeira, a conclusão <strong>deve</strong> ser executada. Se a IA falha nessa lógica, o sistema colapsa.</p>
+    <h2>1. A Anatomia da Decisão em Sistemas Especialistas</h2>
+    <p>Nos primórdios da Inteligência Artificial, na década de 1970 e 1980, a IA era baseada quase que inteiramente em regras lógicas explícitas. Esses eram os chamados <strong>Sistemas Especialistas</strong>.</p>
+    
+    <p>Imagine um sistema médico projetado para diagnosticar doenças. Ele opera através de uma gigantesca teia de implicações lógicas encadeadas:</p>
+    
+    <p><code>p</code>: O paciente tem febre alta.<br>
+    <code>q</code>: O paciente tem uma infecção.</p>
+    
+    <p>Se o sistema valida <code>p</code> como verdadeiro, a regra <code>p → q</code> força o sistema a concluir que <code>q</code> também é verdadeiro. Esse processo é chamado de <strong>Modus Ponens</strong> na lógica formal. Milhares dessas regras juntas criavam sistemas capazes de rivalizar com médicos humanos na época.</p>
 
-    <h2>2. A Tabela-Verdade no Processamento de Dados</h2>
-    <p>Engenheiros de IA utilizam a tabela-verdade para otimizar o custo computacional. Veja a estrutura da implicação que estudamos na lógica matemática:</p>
+    <h2>2. A Tabela-Verdade e a Minimização de Erros</h2>
+    <p>Engenheiros de software e cientistas de dados utilizam a tabela-verdade para mapear todos os estados possíveis de um sistema. Veja a estrutura da implicação que estudamos na lógica matemática:</p>
 
     <table class="logic-table">
       <thead>
         <tr>
-          <th>p</th>
-          <th>q</th>
-          <th>p → q</th>
+          <th>p (Premissa)</th>
+          <th>q (Consequência)</th>
+          <th>p → q (Resultado Lógico)</th>
         </tr>
       </thead>
       <tbody>
@@ -179,20 +192,28 @@
       </tbody>
     </table>
 
-    <p>O que a IA aprende com isso? Ela aprende que a única situação inaceitável é ter uma premissa verdadeira (<code>p</code>) levando a uma conclusão falsa (<code>q</code>). Isso é o que chamamos de <strong>Erro de Predição</strong>.</p>
+    <p>O que a IA aprende com essa tabela? Ela aprende que a única situação inaceitável em um sistema lógico é ter uma premissa verdadeira (<code>p</code>) levando a uma conclusão falsa (<code>q</code>). Na IA moderna, chamamos isso de <strong>Falso Negativo</strong> ou erro de predição. O objetivo do treinamento de uma IA é garantir que a linha 2 dessa tabela nunca aconteça.</p>
 
-    <h2>3. Equivalência Lógica e Eficiência (O Hack do Iezzi)</h2>
-    <p>No Volume 1 de <em>Fundamentos de Matemática Elementar</em>, aprendemos que <code>(p → q) ≡ (¬q → ¬p)</code>. Isso é a <strong>Contrapositiva</strong>.</p>
-    <p>Na computação de alta performance, isso é usado para economizar energia (ATP digital). Às vezes, é muito mais rápido para uma IA verificar se a conclusão é falsa (<code>¬q</code>) para descartar a premissa (<code>¬p</code>) do que processar todos os dados de entrada. Isso reduz a latência e permite que modelos como o GPT respondam em milissegundos.</p>
+    <h2>3. Árvores de Decisão: A Lógica em Escala</h2>
+    <p>Mesmo hoje, na era do Deep Learning, algoritmos baseados em árvores de decisão (como o <em>Random Forest</em> ou <em>XGBoost</em>) são os mais eficientes para processar dados tabulares (como planilhas de bancos ou históricos médicos).</p>
+    
+    <p>Uma árvore de decisão nada mais é do que uma sequência visual de proposições lógicas. A cada "nó" da árvore, a IA faz uma pergunta (<code>p</code>). Se a resposta for sim, ela segue um caminho (<code>q</code>). Se for não (<code>¬p</code>), ela segue outro caminho (<code>¬q</code>). O resultado final é uma conclusão baseada puramente em lógica proposicional.</p>
+
+    <h2>4. O Hack da Eficiência: A Contrapositiva</h2>
+    <p>No Volume 1 de <em>Fundamentos de Matemática Elementar</em>, aprendemos que <code>(p → q) ≡ (¬q → ¬p)</code>. Isso é a <strong>Equivalência Contrapositiva</strong>.</p>
+    
+    <p>Na computação de alta performance, onde cada milissegundo conta, esse conceito é um "hack" de velocidade. Às vezes, processar a premissa <code>p</code> exige analisar gigabytes de dados. No entanto, verificar se a conclusão <code>q</code> é falsa pode ser extremamente rápido.</p>
+    
+    <p>Se a IA detecta que <code>q</code> é falso (<code>¬q</code>), ela aplica a contrapositiva e conclui instantaneamente que <code>p</code> também deve ser falso (<code>¬p</code>), sem precisar gastar energia processando os dados de <code>p</code>. Isso reduz o uso de memória e acelera o tempo de resposta de modelos complexos.</p>
 
     <div class="highlight-box" style="border-left-color: var(--blue);">
-      <strong>Conexão com o Futuro:</strong> As Redes Neurais modernas são, essencialmente, bilhões de "portas lógicas" encadeadas que realizam essas operações em uma escala que o cérebro humano mal consegue imaginar.
+      <strong>Conexão com Redes Neurais:</strong> Embora as redes neurais usem cálculo e álgebra linear para aprender, a saída final de um neurônio artificial (através de funções de ativação como a ReLU ou Sigmoide) tenta simular uma decisão binária: 0 ou 1, Falso ou Verdadeiro.
     </div>
 
     <h2>Conclusão: O Atleta da Mente</h2>
-    <p>Se você quer operar "a mil por hora" no mundo da tecnologia, pare de procurar atalhos e domine a base. A matemática do Ensino Médio é o diferencial entre quem apenas usa a IA e quem <strong>constrói</strong> a IA.</p>
+    <p>Se você quer operar "a mil por hora" no mundo da tecnologia e da Inteligência Artificial, pare de procurar atalhos em tutoriais rasos. Domine a base. A matemática que você estuda hoje é o diferencial entre quem apenas usa as ferramentas de IA e quem tem a capacidade de <strong>construir</strong> a próxima geração de algoritmos.</p>
     
-    <p><strong>Próximo passo:</strong> Da próxima vez que resolver um exercício de conjuntos ou lógica, lembre-se: você está escrevendo o código da próxima revolução industrial.</p>
+    <p>Da próxima vez que estiver resolvendo um exercício de tabela-verdade, lembre-se: você está treinando seu cérebro na mesma linguagem que os engenheiros do Vale do Silício usam para mudar o mundo.</p>
 
     <footer>
       © 2026 TechAI_Lab - Conhecimento é a maior vantagem competitiva.
