@@ -3,8 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TechAI_Lab — O Futuro da Inteligência Artificial</title>
-  <meta name="description" content="Explore ferramentas, artigos e análises sobre o universo da IA." />
+  <title>TechAI_Lab — Inteligencia Artificial, Ciencia e Engenharia</title>
+  <meta name="description" content="TechAI_Lab: artigos tecnicos, fronteiras da inovacao e um stack essencial para estudar IA com rigor e alta performance." />
+
+  <meta property="og:site_name" content="TechAI_Lab" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="TechAI_Lab — Inteligencia Artificial, Ciencia e Engenharia" />
+  <meta property="og:description" content="Artigos tecnicos, radar de inovacao, fundamentos cientificos e ferramentas essenciais para evoluir em IA." />
+  <meta property="og:image" content="og-techai-lab.svg" />
+  <meta property="og:image:type" content="image/svg+xml" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="TechAI_Lab — Inteligencia Artificial, Ciencia e Engenharia" />
+  <meta name="twitter:description" content="Artigos tecnicos, radar de inovacao, fundamentos e um painel de ferramentas para estudar IA." />
+  <meta name="twitter:image" content="og-techai-lab.svg" />
   
   <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,6 +56,63 @@
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+
+    /* ===== READING PROGRESS + TO TOP ===== */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 220;
+    }
+    .reading-progress__bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+      box-shadow: 0 0 18px rgba(79, 142, 247, 0.55);
+      transition: width 0.08s linear;
+    }
+
+    .to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 210;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(79, 142, 247, 0.18);
+      background: rgba(15, 15, 26, 0.82);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    }
+    .to-top:hover {
+      border-color: rgba(139, 92, 246, 0.45);
+    }
+    .to-top.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .to-top svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--text);
+      opacity: 0.92;
     }
 
     /* ===== NAVBAR (ATUALIZADA) ===== */
@@ -301,11 +372,213 @@
       font-weight: 600;
     }
 
+    /* ===== AI STACK ===== */
+    .stack-section {
+      padding: 5rem 0 0;
+    }
+    .stack-panel {
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 1.5rem;
+      background:
+        linear-gradient(180deg, rgba(79, 142, 247, 0.05), rgba(139, 92, 246, 0.03)),
+        var(--bg2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .stack-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 210px;
+      padding: 1.1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(79, 142, 247, 0.12);
+      background: rgba(19, 19, 31, 0.8);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .stack-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(79, 142, 247, 0.04), transparent 55%);
+      pointer-events: none;
+    }
+    .stack-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: 0 18px 40px -28px rgba(79, 142, 247, 0.45);
+    }
+    .stack-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+      color: var(--blue);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .stack-category-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      box-shadow: 0 0 12px rgba(79, 142, 247, 0.4);
+    }
+    .stack-tool {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      line-height: 1.2;
+      margin-bottom: 0.65rem;
+      color: var(--text);
+    }
+    .stack-card p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      margin-bottom: 1rem;
+    }
+    .stack-link {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .stack-link:hover {
+      color: var(--blue);
+    }
+
+    /* ===== HUMAN HARDWARE ===== */
+    .human-section {
+      padding: 5rem 0 0;
+    }
+    .human-panel {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 1.6rem;
+      background:
+        radial-gradient(circle at top right, rgba(6, 182, 212, 0.10), transparent 48%),
+        radial-gradient(circle at top left, rgba(79, 142, 247, 0.08), transparent 52%),
+        var(--bg2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      overflow: hidden;
+    }
+    .human-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+    .human-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .human-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      padding: 1.2rem;
+      border: 1px solid rgba(79, 142, 247, 0.14);
+      background: rgba(19, 19, 31, 0.82);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .human-card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(79, 142, 247, 0.8), rgba(139, 92, 246, 0.7), transparent);
+      opacity: 0.65;
+      pointer-events: none;
+    }
+    .human-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(6, 182, 212, 0.35);
+      box-shadow: 0 18px 40px -28px rgba(6, 182, 212, 0.35);
+    }
+    .human-head {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.85rem;
+    }
+    .human-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid rgba(6, 182, 212, 0.22);
+      background: linear-gradient(180deg, rgba(6, 182, 212, 0.12), rgba(79, 142, 247, 0.06)), var(--bg3);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+    .human-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--text);
+      opacity: 0.92;
+    }
+    .human-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.18rem;
+      line-height: 1.2;
+      margin: 0;
+    }
+    .human-card p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      margin-bottom: 0.95rem;
+    }
+    .human-metrics {
+      display: grid;
+      gap: 0.6rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .human-metric {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.8rem;
+      color: var(--text);
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+    .human-metric span {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.84rem;
+    }
+
     @media (max-width: 640px) {
       .container { padding: 0 1.25rem; }
       .hero { padding: 6rem 1.25rem 4rem; }
       .innovation-card { min-height: auto; }
       .fundamentals-grid { grid-template-columns: 1fr; }
+      .stack-panel { padding: 1rem; }
+      .stack-card { min-height: auto; }
+      .human-panel { padding: 1rem; }
     }
 
     .btn-read {
@@ -322,6 +595,18 @@
   </style>
 </head>
 <body>
+
+  <div class="reading-progress" aria-hidden="true">
+    <div class="reading-progress__bar" id="readingProgressBar"></div>
+  </div>
+
+  <button class="to-top" id="toTopBtn" type="button" aria-label="Voltar ao topo">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V6" />
+      <path d="M7 11l5-5 5 5" />
+    </svg>
+    Topo
+  </button>
 
   <!-- NAVBAR ATUALIZADA -->
   <nav>
@@ -499,9 +784,190 @@
     </div>
   </section>
 
+  <section class="stack-section" id="ai-stack">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <div class="section-tag" style="background: rgba(79, 142, 247, 0.1); color: var(--blue);">AI Stack</div>
+          <h2 class="section-title">Ferramentas Essenciais</h2>
+        </div>
+        <p class="section-description">
+          Um painel enxuto com plataformas de referencia para operacao, criacao, engenharia e pesquisa aplicada em inteligencia artificial.
+        </p>
+      </div>
+
+      <div class="stack-panel">
+        <div class="stack-grid">
+          <article class="stack-card">
+            <div class="stack-category"><span class="stack-category-dot"></span>Produtividade</div>
+            <h3 class="stack-tool">Notion AI</h3>
+            <p>Organiza notas, resumo de reunioes e fluxos de documentacao com aceleracao assistida por IA.</p>
+            <a class="stack-link" href="https://www.notion.so/product/ai" target="_blank" rel="noopener noreferrer">Acessar ferramenta ↗</a>
+          </article>
+
+          <article class="stack-card">
+            <div class="stack-category"><span class="stack-category-dot"></span>Produtividade</div>
+            <h3 class="stack-tool">Perplexity</h3>
+            <p>Entrega respostas com referencias e pesquisa web em tempo real para analise mais rapida.</p>
+            <a class="stack-link" href="https://www.perplexity.ai/" target="_blank" rel="noopener noreferrer">Acessar ferramenta ↗</a>
+          </article>
+
+          <article class="stack-card">
+            <div class="stack-category" style="color: var(--purple);"><span class="stack-category-dot"></span>Geracao de Imagem</div>
+            <h3 class="stack-tool">Midjourney</h3>
+            <p>Gera imagens com forte controle estilistico para exploracao visual, conceito e direcao criativa.</p>
+            <a class="stack-link" href="https://www.midjourney.com/" target="_blank" rel="noopener noreferrer">Acessar ferramenta ↗</a>
+          </article>
+
+          <article class="stack-card">
+            <div class="stack-category" style="color: var(--purple);"><span class="stack-category-dot"></span>Geracao de Imagem</div>
+            <h3 class="stack-tool">Adobe Firefly</h3>
+            <p>Produz assets generativos com integracao ao ecossistema Adobe e foco em workflows de design.</p>
+            <a class="stack-link" href="https://firefly.adobe.com/" target="_blank" rel="noopener noreferrer">Acessar ferramenta ↗</a>
+          </article>
+
+          <article class="stack-card">
+            <div class="stack-category"><span class="stack-category-dot"></span>Desenvolvimento</div>
+            <h3 class="stack-tool">GitHub Copilot</h3>
+            <p>Acelera escrita de codigo, sugestoes contextuais e automacao de tarefas dentro do ambiente de desenvolvimento.</p>
+            <a class="stack-link" href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer">Acessar ferramenta ↗</a>
+          </article>
+
+          <article class="stack-card">
+            <div class="stack-category"><span class="stack-category-dot"></span>Desenvolvimento</div>
+            <h3 class="stack-tool">Cursor</h3>
+            <p>Amplia produtividade de engenharia com agentes, edicao assistida e contexto de codebase em escala.</p>
+            <a class="stack-link" href="https://cursor.com/" target="_blank" rel="noopener noreferrer">Acessar ferramenta ↗</a>
+          </article>
+
+          <article class="stack-card">
+            <div class="stack-category" style="color: var(--cyan);"><span class="stack-category-dot"></span>Pesquisa Cientifica</div>
+            <h3 class="stack-tool">Semantic Scholar</h3>
+            <p>Facilita descoberta de artigos, citacoes e trilhas de leitura para revisao tecnica aprofundada.</p>
+            <a class="stack-link" href="https://www.semanticscholar.org/" target="_blank" rel="noopener noreferrer">Acessar ferramenta ↗</a>
+          </article>
+
+          <article class="stack-card">
+            <div class="stack-category" style="color: var(--cyan);"><span class="stack-category-dot"></span>Pesquisa Cientifica</div>
+            <h3 class="stack-tool">Connected Papers</h3>
+            <p>Mapeia relacoes entre publicacoes para identificar escolas de pensamento e frentes emergentes.</p>
+            <a class="stack-link" href="https://www.connectedpapers.com/" target="_blank" rel="noopener noreferrer">Acessar ferramenta ↗</a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="human-section" id="human-hardware">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <div class="section-tag" style="background: rgba(6, 182, 212, 0.10); color: var(--cyan);">Human Hardware</div>
+          <h2 class="section-title">Otimizacao Biologica</h2>
+        </div>
+        <p class="section-description">
+          O estudo serio de IA exige um cerebro estavel: foco profundo, combustivel adequado e recuperacao consistente. Trate sua biologia como infraestrutura critica.
+        </p>
+      </div>
+
+      <div class="human-panel">
+        <div class="human-grid">
+          <article class="human-card">
+            <div class="human-head">
+              <div class="human-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v4" />
+                  <path d="M9 6h6" />
+                  <path d="M6.5 10.5c0-2.4 2-4.3 4.5-4.3h2c2.5 0 4.5 1.9 4.5 4.3v4c0 2.6-2.1 4.7-4.7 4.7h-1.6" />
+                  <path d="M9 15.5h6" />
+                </svg>
+              </div>
+              <h3 class="human-title">Protocolo de Dopamina</h3>
+            </div>
+            <p>
+              Para foco profundo, reduza micro-recompensas. Blocos de trabalho sem notificacoes, entrada unica de tarefa e pausas programadas constroem tracao sem dispersao.
+            </p>
+            <div class="human-metrics">
+              <div class="human-metric">Alvo <span>60–90 min de deep work</span></div>
+              <div class="human-metric">Ambiente <span>zero notificacoes + lista curta</span></div>
+              <div class="human-metric">Regra <span>pausa deliberada, nao scroll</span></div>
+            </div>
+          </article>
+
+          <article class="human-card">
+            <div class="human-head">
+              <div class="human-icon" aria-hidden="true" style="border-color: rgba(139, 92, 246, 0.28);">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3c3 3 4 5.5 4 8a4 4 0 0 1-8 0c0-2.5 1-5 4-8z" />
+                  <path d="M7 15c1.5 2 3.6 3 5 3s3.5-1 5-3" />
+                </svg>
+              </div>
+              <h3 class="human-title">Nutricao Neural</h3>
+            </div>
+            <p>
+              Cognicao sustentada depende de base mineral e regulacao metabolica. Magnésio suporta excitabilidade neuronal; vitamina K2 contribui para sinalizacao e saude sistemica.
+            </p>
+            <div class="human-metrics">
+              <div class="human-metric">Magnésio <span>suporte a relaxamento e sono</span></div>
+              <div class="human-metric">K2 <span>sinergia com metabolismo e tecidos</span></div>
+              <div class="human-metric">Pratica <span>consistencia &gt; intensidade</span></div>
+            </div>
+          </article>
+
+          <article class="human-card">
+            <div class="human-head">
+              <div class="human-icon" aria-hidden="true" style="border-color: rgba(79, 142, 247, 0.24);">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12h4l2-5 4 10 2-5h6" />
+                  <path d="M7 20h10" />
+                </svg>
+              </div>
+              <h3 class="human-title">Recuperacao Ativa</h3>
+            </div>
+            <p>
+              Alta performance e uma funcao de recuperacao. Sono de qualidade consolida memoria; banho gelado pode atuar como estimulo agudo para estado de alerta e resiliencia.
+            </p>
+            <div class="human-metrics">
+              <div class="human-metric">Sono <span>regularidade + higiene noturna</span></div>
+              <div class="human-metric">Frio <span>exposicao curta e controlada</span></div>
+              <div class="human-metric">Ritmo <span>treino leve em dias longos</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <p>© 2026 TechAI_Lab. Desenvolvido com foco em Alta Performance.</p>
   </footer>
+
+  <script>
+    const progressBar = document.getElementById('readingProgressBar');
+    const toTopBtn = document.getElementById('toTopBtn');
+
+    function updateReadingUI() {
+      const doc = document.documentElement;
+      const scrollTop = doc.scrollTop || document.body.scrollTop;
+      const scrollHeight = doc.scrollHeight || document.body.scrollHeight;
+      const clientHeight = doc.clientHeight || window.innerHeight;
+      const scrollable = Math.max(1, scrollHeight - clientHeight);
+      const progress = Math.min(100, Math.max(0, (scrollTop / scrollable) * 100));
+
+      progressBar.style.width = progress.toFixed(2) + '%';
+
+      if (scrollTop > 420) toTopBtn.classList.add('is-visible');
+      else toTopBtn.classList.remove('is-visible');
+    }
+
+    window.addEventListener('scroll', updateReadingUI, { passive: true });
+    window.addEventListener('resize', updateReadingUI);
+    updateReadingUI();
+
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 
 </body>
 </html>
