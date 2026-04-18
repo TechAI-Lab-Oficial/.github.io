@@ -592,6 +592,22 @@
     .btn-read:hover { opacity: 0.9; }
 
     footer { padding: 4rem 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 14px; margin-top: 5rem; }
+    .footer-links {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-top: 0.85rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-links a:hover {
+      color: var(--blue);
+    }
   </style>
 </head>
 <body>
@@ -976,6 +992,11 @@
 
   <footer>
     <p>© 2026 TechAI_Lab. Desenvolvido com foco em Alta Performance.</p>
+    <div class="footer-links">
+      <a href="privacidade.html">Privacidade</a>
+      <span>•</span>
+      <a href="termos.html">Termos</a>
+    </div>
   </footer>
 
   <script>
