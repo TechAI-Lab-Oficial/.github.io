@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Arte de Falar com Maquinas: Engenharia de Prompt — TechAI_Lab</title>
+
+  <meta name="description" content="Guia de Engenharia de Prompt: few-shot prompting, estrutura de comandos, verificacao e como extrair raciocinio util de modelos como Claude e GPT-4o sem perder precisao." />
+
+  <meta property="og:site_name" content="TechAI_Lab" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="A Arte de Falar com Maquinas: Engenharia de Prompt | TechAI_Lab" />
+  <meta property="og:description" content="Tecnicas praticas: few-shot, decomposicao, criterios de aceitacao e como obter respostas mais logicas e auditaveis em LLMs." />
+  <meta property="og:image" content="og-techai-lab.svg" />
+  <meta property="og:image:type" content="image/svg+xml" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="A Arte de Falar com Maquinas: Engenharia de Prompt | TechAI_Lab" />
+  <meta name="twitter:description" content="Como estruturar comandos para obter mais raciocinio, menos alucinacao e respostas acionaveis em Claude e GPT-4o." />
+  <meta name="twitter:image" content="og-techai-lab.svg" />
+  
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== VARIÁVEIS & RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg:      #0a0a0f;
+      --bg2:     #0f0f1a;
+      --blue:    #4f8ef7;
+      --purple:  #8b5cf6;
+      --cyan:    #06b6d4;
+      --text:    #e2e8f0;
+      --muted:   #94a3b8;
+      --border:  #1e2a3a;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ===== READING PROGRESS + TO TOP ===== */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 220;
+    }
+    .reading-progress__bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+      box-shadow: 0 0 18px rgba(79, 142, 247, 0.55);
+      transition: width 0.08s linear;
+    }
+
+    .to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 210;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(79, 142, 247, 0.18);
+      background: rgba(15, 15, 26, 0.82);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    }
+    .to-top:hover { border-color: rgba(139, 92, 246, 0.45); }
+    .to-top.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .to-top svg { width: 16px; height: 16px; stroke: var(--text); opacity: 0.92; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
+
+    /* ===== CABEÇALHO DO ARTIGO ===== */
+    .back-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3rem;
+      transition: transform 0.2s;
+    }
+    .back-link:hover { transform: translateX(-5px); }
+
+    .article-tag {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .meta {
+      display: flex;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    /* ===== CONTEÚDO ===== */
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8rem;
+      margin: 3.5rem 0 1.5rem;
+      color: #fff;
+      border-left: 4px solid var(--cyan);
+      padding-left: 10px;
+    }
+
+    h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      margin: 2rem 0 1rem;
+      color: #fff;
+    }
+
+    p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); text-align: justify; }
+    strong { color: #fff; font-weight: 600; }
+
+    .highlight-box {
+      background: var(--bg2);
+      border-left: 4px solid var(--blue);
+      padding: 2rem;
+      margin: 2.5rem 0;
+      border-radius: 0 16px 16px 0;
+    }
+
+    code {
+      background: #1e2a3a;
+      color: var(--cyan);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      margin: 1.5rem 0 2rem;
+      padding: 1.25rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: auto;
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .logic-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      background: var(--bg2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .logic-table th, .logic-table td {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    .logic-table th { background: var(--border); color: var(--cyan); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
+
+    footer {
+      text-align: center;
+      padding: 5rem 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress" aria-hidden="true">
+    <div class="reading-progress__bar" id="readingProgressBar"></div>
+  </div>
+
+  <button class="to-top" id="toTopBtn" type="button" aria-label="Voltar ao topo">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V6" />
+      <path d="M7 11l5-5 5 5" />
+    </svg>
+    Topo
+  </button>
+
+  <div class="container">
+    <a href="index.html" class="back-link">← Voltar para a Home</a>
+
+    <div class="article-tag">Engenharia de Prompt</div>
+    <h1>A Arte de Falar com Maquinas: guia de Engenharia de Prompt</h1>
+
+    <div class="meta">
+      <span>📅 18 de Abril, 2026</span>
+      <span>⏱️ 14 min de leitura</span>
+      <span>✍️ Por TechAI_Lab Team</span>
+    </div>
+
+    <p>Engenharia de prompt nao e “truque de frase”. E projeto de interface. Modelos como Claude e GPT-4o sao motores probabilisticos com capacidade de planejamento, sintese e raciocinio — mas eles respondem melhor quando recebem <strong>estrutura</strong>: objetivo claro, contexto suficiente e um formato de saida verificavel.</p>
+
+    <p>Se seu prompt e vago, o modelo vira um escritor. Se seu prompt e bem desenhado, o modelo vira um <strong>sistema de resolucao</strong>: ele organiza o problema, aplica criterios e entrega algo auditavel.</p>
+
+    <div class="highlight-box">
+      <strong>Meta do prompt de alto nivel:</strong> reduzir ambiguidade e aumentar verificabilidade.<br /><br />
+      Bons prompts definem: <code>objetivo</code>, <code>restricoes</code>, <code>dados de entrada</code>, <code>criterios de aceitacao</code> e <code>formato de saida</code>.
+    </div>
+
+    <h2>1. Uma estrutura que quase sempre funciona</h2>
+    <p>Quando voce quer raciocinio consistente, evite “fazer uma pergunta e torcer”. Use um template. Um dos mais eficientes e:</p>
+
+    <pre><code>Contexto:
+- (o que o modelo precisa saber para nao inventar)
+
+Objetivo:
+- (o que voce quer no final)
+
+Restrições:
+- (limites: tempo, formato, stack, linguagem, publico)
+
+Critérios de aceitação:
+- (como voce vai julgar se está bom)
+
+Saída:
+- (formato exato: bullets, JSON, passos, tabela, codigo)</code></pre>
+
+    <p>Essa estrutura funciona porque transforma conversa em especificacao. Ela reduz alucinacao por falta de contexto e reduz “texto bonito” sem utilidade.</p>
+
+    <h2>2. Few-shot prompting: ensine pelo exemplo</h2>
+    <p>Few-shot prompting e quando voce fornece <strong>2–5 exemplos</strong> do que voce considera uma boa resposta no seu contexto. Para o modelo, exemplos sao mais fortes que explicacoes abstratas, porque eles ancoram estilo, nivel tecnico e formato.</p>
+    <p>Use few-shot quando o trabalho e altamente padronizado: triagem, classificacao, reescrita, extracao, respostas com tom editorial e estrutura repetivel.</p>
+
+    <pre><code>Você é um revisor técnico.
+
+Tarefa: Resumir em 3 bullets + 1 risco.
+
+Exemplo 1 (entrada):
+"O sistema usa cache LRU e invalidação por TTL..."
+Exemplo 1 (saída):
+- (bullet 1)
+- (bullet 2)
+- (bullet 3)
+Risco: ...
+
+Agora faça para este texto:
