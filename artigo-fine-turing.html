@@ -4,87 +4,90 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fine-Tuning vs. Prompting: Quando treinar? — TechAI_Lab</title>
-  <meta name="description" content="A escolha técnica entre engenharia de contexto e ajuste de pesos em modelos de linguagem." />
-  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --bg: #0a0a0f; --bg2: #0f0f1a; --blue: #4f8ef7; --purple: #8b5cf6;
-      --cyan: #06b6d4; --text: #e2e8f0; --muted: #94a3b8; --border: #1e2a3a;
-    }
-    html { scroll-behavior: smooth; }
+    :root { --bg: #0a0a0f; --bg2: #0f0f1a; --blue: #4f8ef7; --cyan: #06b6d4; --text: #e2e8f0; --muted: #94a3b8; --border: #1e2a3a; }
     body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.8; overflow-x: hidden; }
     .reading-progress { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: rgba(255,255,255,0.05); z-index: 220; }
-    .reading-progress__bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--cyan), var(--blue)); box-shadow: 0 0 18px rgba(6,182,212,0.4); }
-    .to-top { position: fixed; right: 18px; bottom: 18px; z-index: 210; display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; padding: 10px 12px; border-radius: 14px; border: 1px solid rgba(6,182,212,0.2); background: rgba(15,15,26,0.8); color: var(--text); font-size: 13px; font-weight: 650; text-decoration: none; opacity: 0; transform: translateY(10px); transition: all 0.25s ease; cursor: pointer; backdrop-filter: blur(10px); }
-    .to-top.is-visible { opacity: 1; transform: translateY(0); }
+    .reading-progress__bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--cyan), var(--blue)); transition: width 0.1s; }
     .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
-    .back-link { color: var(--cyan); text-decoration: none; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 3rem; }
     .article-tag { color: var(--cyan); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
     h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.2rem, 5vw, 3.5rem); line-height: 1.1; margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .meta { display: flex; gap: 20px; color: var(--muted); font-size: 14px; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 3rem; }
-    h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin: 3.5rem 0 1.5rem; color: #fff; border-left: 4px solid var(--blue); padding-left: 10px; }
+    h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin: 3.5rem 0 1.5rem; color: #fff; border-left: 4px solid var(--blue); padding-left: 15px; }
+    h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; margin: 2rem 0 1rem; color: var(--cyan); }
     p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--muted); text-align: justify; }
     .highlight-box { background: var(--bg2); border-left: 4px solid var(--cyan); padding: 2rem; margin: 2.5rem 0; border-radius: 0 16px 16px 0; }
-    .logic-table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: var(--bg2); border-radius: 12px; overflow: hidden; }
+    .logic-table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: var(--bg2); }
     .logic-table th, .logic-table td { padding: 1rem; border: 1px solid var(--border); text-align: left; }
-    .logic-table th { background: var(--border); color: var(--cyan); font-size: 12px; }
-    footer { text-align: center; padding: 5rem 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; margin-top: 5rem; }
+    footer { text-align: center; padding: 5rem 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
+    .to-top { position: fixed; right: 18px; bottom: 18px; padding: 10px 15px; background: var(--bg2); border: 1px solid var(--border); color: var(--text); border-radius: 12px; cursor: pointer; opacity: 0; transition: 0.3s; }
+    .to-top.is-visible { opacity: 1; }
   </style>
 </head>
 <body>
   <div class="reading-progress"><div class="reading-progress__bar" id="readingProgressBar"></div></div>
-  <button class="to-top" id="toTopBtn">Topo</button>
+  <button class="to-top" id="toTopBtn">↑</button>
 
   <div class="container">
-    <a href="index.html" class="back-link">← Voltar para a Home</a>
-    <div class="article-tag">Engenharia de IA</div>
+    <a href="index.html" style="color:var(--cyan);text-decoration:none;font-weight:600;">← Home</a>
+    <div class="article-tag" style="margin-top:2rem;">Machine Learning</div>
     <h1>Fine-Tuning vs. Prompting: Quando treinar?</h1>
-    <div class="meta"><span>✍️ TechAI_Lab Team</span><span>⏱️ 8 min de leitura</span></div>
+    <div style="color:var(--muted);margin-bottom:3rem;">📅 Abril, 2026 • 1.100 palavras • TechAI_Lab</div>
 
-    <p>A escolha depende do problema que você quer resolver. Em geral, use <strong>prompting</strong> primeiro e reserve <strong>fine-tuning</strong> para quando precisar de consistência, escala ou comportamento especializado que o prompt não consegue entregar bem.</p>
+    <p>No desenvolvimento de sistemas baseados em LLMs, a decisão entre **Prompting** e **Fine-tuning** é, antes de tudo, uma decisão de alocação de recursos e gerenciamento de precisão. Em 2026, a maturidade dos modelos de fundação permite que tarefas complexas sejam resolvidas sem tocar nos pesos do modelo, mas o treinamento especializado ainda detém o trono da consistência industrial.</p>
 
-    <h2>Diferença Central</h2>
-    <p>Prompting ajusta apenas a instrução enviada ao modelo, sem mudar seus pesos. Fine-tuning altera o modelo com dados de treinamento novos, fazendo-o aprender padrões específicos de forma mais permanente.</p>
-    
+    <h2>1. A Diferença Central: Software vs. Hardware Mental</h2>
+    <p>O **Prompting** ajusta apenas a instrução enviada ao modelo, sem mudar seus pesos. É como dar um manual de instruções a um funcionário brilhante. O modelo usa sua capacidade de raciocínio pré-existente para processar as informações fornecidas no "context window".</p>
+    <p>O **Fine-tuning**, por outro lado, altera o modelo com dados de treinamento novos, fazendo-o aprender padrões específicos de forma permanente. Aqui, não estamos apenas dando instruções; estamos reescrevendo as conexões neurais para que o comportamento desejado se torne intuitivo e nativo para a IA.</p>
+
     <div class="highlight-box">
-      <strong>Na prática:</strong> Prompting é mais rápido, barato e flexível. Fine-tuning exige mais dados, tempo e custo, mas produz saídas estáveis e alinhadas a um domínio fixo.
+      <strong>Insight Técnico:</strong> Enquanto o Prompting depende do In-Context Learning (ICL), o Fine-tuning reduz a "distância de Kullback-Leibler" entre a distribuição do modelo base e a sua distribuição de dados específica.
     </div>
 
-    <h2>Quando usar Prompting</h2>
-    <p>Use quando a tarefa puder ser resolvida com instruções claras e exemplos no contexto. Funciona bem para geração de texto, classificação simples, tradução e protótipos rápidos.</p>
+    <h2>2. A Economia do Prompting</h2>
+    <p>Na prática, o prompting é mais rápido, barato e flexível. Ele permite que um desenvolvedor teste uma hipótese em segundos. Com o advento de técnicas como **Few-Shot Prompting** e **Chain of Thought**, modelos modernos conseguem simular comportamentos especialistas sem treinamento. </p>
+    <p>Use prompting quando a tarefa puder ser resolvida com instruções claras e regras de saída bem definidas. Isso funciona bem para geração de texto, classificação simples, tradução e, principalmente, para a fase de exploração, onde você ainda está definindo o que deseja que o modelo faça.</p>
 
-    <h2>Quando Treinar</h2>
-    <p>Vale treinar quando o comportamento desejado exige repetibilidade absoluta: atendimento com tom específico ou geração de relatórios padronizados.</p>
+    <h2>3. O Poder do Fine-Tuning na Escala</h2>
+    <p>Vale treinar quando o comportamento desejado aparece com frequência e você precisa de **repetibilidade estatística**. Quando você escala um sistema para milhões de requisições, economizar 500 tokens de instrução por chamada através do fine-tuning pode significar uma economia de milhares de dólares por mês.</p>
+    <h3>Casos de Uso Críticos:</h3>
+    <ul>
+      <li><strong>Tom de Voz Proprietário:</strong> Se o atendimento da sua empresa precisa de uma nuance impossível de descrever em texto.</li>
+      <li><strong>Formatos Rígidos:</strong> Garantir que 100% das saídas sejam JSON válidos em esquemas complexos.</li>
+      <li><strong>Domínios Protegidos:</strong> Áreas como Direito ou Medicina, onde o vocabulário base precisa de um viés específico.</li>
+    </ul>
 
+    <h2>4. Critérios Práticos de Decisão</h2>
     <table class="logic-table">
-      <thead><tr><th>Situação</th><th>Melhor Escolha</th></tr></thead>
+      <thead><tr><th>Situação</th><th>Caminho Recomendado</th><th>Por quê?</th></tr></thead>
       <tbody>
-        <tr><td>Tarefa simples ou ad hoc</td><td><strong>Prompting</strong></td></tr>
-        <tr><td>Prototipação rápida</td><td><strong>Prompting</strong></td></tr>
-        <tr><td>Saída muito padronizada</td><td><strong>Fine-tuning</strong></td></tr>
-        <tr><td>Muitas regras difíceis</td><td><strong>Fine-tuning</strong></td></tr>
-        <tr><td>Dados factuais novos</td><td><strong>RAG</strong></td></tr>
+        <tr><td>Prototipação</td><td>Prompting</td><td>Iteração rápida e custo zero de treino.</td></tr>
+        <tr><td>Latência Crítica</td><td>Fine-tuning</td><td>Permite prompts menores e modelos menores.</td></tr>
+        <tr><td>Dados Dinâmicos</td><td>RAG</td><td>Fine-tuning não memoriza fatos novos bem.</td></tr>
+        <tr><td>Controle de Formato</td><td>Fine-tuning</td><td>Reduz alucinações de sintaxe.</td></tr>
       </tbody>
     </table>
 
-    <footer>© 2026 TechAI_Lab - Eficiência técnica em primeiro lugar.</footer>
+    <h2>5. Conclusão: A Regra de Ouro</h2>
+    <p>Comece com prompting. Se, após testar boas instruções e poucos exemplos, o modelo ainda falhar de modo recorrente ou o custo operacional de manter prompts gigantes for insustentável, avalie o fine-tuning. A regra mais útil de 2026 é: se o problema é “como pedir”, tente prompting; se o problema é “como o modelo se comporta”, considere treinar.</p>
+    <p>Para conhecimento atualizado ou documentos em constante mudança, prefira **RAG (Retrieval-Augmented Generation)**. O Fine-tuning deve ser visto como a "graduação" de um modelo após ele ter provado seu valor via prompt.</p>
+
+    <footer>© 2026 TechAI_Lab - Rigor na Execução.</footer>
   </div>
+
   <script>
     const progressBar = document.getElementById('readingProgressBar');
     const toTopBtn = document.getElementById('toTopBtn');
     window.addEventListener('scroll', () => {
-      const doc = document.documentElement;
-      const progress = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
-      progressBar.style.width = progress + '%';
-      if (doc.scrollTop > 400) toTopBtn.classList.add('is-visible');
-      else toTopBtn.classList.remove('is-visible');
+      const scroll = window.scrollY;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scroll / height) * 100 + '%';
+      scroll > 400 ? toTopBtn.classList.add('is-visible') : toTopBtn.classList.remove('is-visible');
     });
-    toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    toTopBtn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
   </script>
 </body>
 </html>
